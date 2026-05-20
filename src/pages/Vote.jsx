@@ -146,7 +146,7 @@ export default function Vote() {
           const members = byTeam(team.id);
           const full = members.length >= MAX;
           const mine = effectiveSelectedTeamId === team.id;
-          const canSeeNames = me?.role === 'admin' || me?.id === team.leader_id || !setting?.is_open;
+          const canSeeNames = me?.role === 'admin';
           const leaderInitial = (team.leader_name || '?').slice(0, 1);
           const visibleNames = canSeeNames ? members.map((m) => m.user_name) : [];
 
