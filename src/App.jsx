@@ -7,7 +7,7 @@ import { GlobalStyle, MobileFrame, PageShell } from './styles/app';
 
 export default function App() {
   return (
-    <BrowserRouter basename="/team-front">
+    <BrowserRouter basename="/volmo">
       <GlobalStyle />
       <PageShell>
         <MobileFrame>
