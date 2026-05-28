@@ -147,7 +147,6 @@ export default function Vote() {
           const full = members.length >= MAX;
           const mine = effectiveSelectedTeamId === team.id;
           const canSeeNames = me?.role === 'admin';
-          const leaderInitial = (team.leader_name || '?').slice(0, 1);
           const visibleNames = canSeeNames ? members.map((m) => m.user_name) : [];
 
           return (
@@ -168,10 +167,9 @@ export default function Vote() {
             >
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 10 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <div style={avatarStyle}>{leaderInitial}</div>
+                  <div style={avatarStyle}>{team.name?.slice(0, 1) || '?'}</div>
                   <div>
-                    <strong>{team.leader_name}</strong>
-                    <S.Meta>{team.name}</S.Meta>
+                    <strong>{team.name}</strong>
                   </div>
                 </div>
                 {setting?.is_open ? (

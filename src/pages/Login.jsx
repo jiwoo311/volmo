@@ -3,11 +3,29 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../utils/supabase';
 import * as S from '../styles/app';
 
+const ADMIN_SECONDARY_PASSWORD = (import.meta.env.VITE_ADMIN_SECONDARY_PASSWORD || '').trim();
+
 export default function Login() {
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const verifyAdminSecondFactor = () => {
+    if (!ADMIN_SECONDARY_PASSWORD) {
+      setError('관리자 2차 비밀번호가 설정되지 않았습니다. .env의 VITE_ADMIN_SECONDARY_PASSWORD를 확인해주세요.');
+      return false;
+    }
+
+    const input = window.prompt('관리자의 경우 비밀번호 인증이 필요합니다');
+    if (input === null) return false;
+    if (input !== ADMIN_SECONDARY_PASSWORD) {
+      setError('관리자 비밀번호가 올바르지 않습니다.');
+      return false;
+    }
+
+    return true;
+  };
 
   const submit = async (e) => {
     e.preventDefault();
@@ -29,6 +47,10 @@ export default function Login() {
     }
 
     if (found) {
+      if (found.role === 'admin' && !verifyAdminSecondFactor()) {
+        setLoading(false);
+        return;
+      }
       localStorage.setItem('profileId', found.id);
       navigate('/vote');
       return;
